@@ -1,0 +1,26 @@
+
+img {
+height: 100px;
+width: 150px;
+margin: 0px 5px 20px 550px;
+float:left;
+
+}
+
+h1 {
+text-align: center;
+color: #006dcc !important;
+float: left;
+text-decoration: solid 5px white;
+}
+
+form {
+	margin: 10px;
+}
+
+.jumbotron {
+
+	height: 140px;
+	background-color: red !important;
+	opacity: 0.6;
+
