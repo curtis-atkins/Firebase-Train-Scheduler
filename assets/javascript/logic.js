@@ -45,14 +45,8 @@ $(document).ready(function() {
         //Alert
         alert("Your Train is being TrakT");
 
-        //Clear form
-/*        $("#trainName").val("");
-        $("#destination").val("");
-        $("#trainTime").val("");
-        $("#frequency").val("");
-        });
-*/        
-    $("#form").get(0).reset()
+        //Clear form  
+   $("#form").get(0).reset()
         
     //firebase watcher
     database.ref().on("child_added", function(childSnapshot, prevChildKey) {
@@ -84,3 +78,4 @@ $(document).ready(function() {
     });
     
 });
+    });
