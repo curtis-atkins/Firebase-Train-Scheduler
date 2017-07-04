@@ -1,77 +1,86 @@
 $(document).ready(function() {
+ 
+// Initialize Firebase
+    var config = {
+    apiKey: "AIzaSyBYSDE8XErwXioIOf45G6rHUzKTbkQfhxc",
+    authDomain: "train-trakt-project.firebaseapp.com",
+    databaseURL: "https://train-trakt-project.firebaseio.com",
+    projectId: "train-trakt-project",
+    storageBucket: "",
+    messagingSenderId: "879287267273"
+    };
+
+    firebase.initializeApp(config);
+
     var database = firebase.database();
+
     // Capture Button Click
     $("#addTrain").on("click", function(event) {
         // prevent page from refreshing when form tries to submit itself
         event.preventDefault();
-        // Capture user inputs and store them into variables
+
+        // Put user inputs into variables
         var trainName = $("#trainName").val().trim();
         var destination = $("#destination").val().trim();
-        var trainTime = $("#trainTime").val().trim();
+        var trainTime = moment($("#trainTime").val().trim(), "HH:mm").format("X");
         var frequency = $("#frequency").val().trim();
         //var nextArrival = $("#nextArrival").val().trim();
         //initial data for firebase database
-        database.ref().set({
+        var newTrain = {
             trainName: trainName,
             destination: destination,
             trainTime: trainTime,
-            frequency: frequency,
-            //nextArrival: nextArrival
-        });
-    });
-    //firebase watcher
-    database.ref().on("value", function(snapshot) {
-        // Console log each of the user inputs to confirm we are receiving them
-        console.log(snapshot.val());
-        console.log(snapshot.val().trainName);
-        console.log(snapshot.val().destination);
-        console.log(snapshot.val().trainTime);
-        console.log(snapshot.val().frequency);
-        //console.log(snapshot.val().nextArrival);
-        // Updates the input in the form
-        $("#traktTrainName").html(snapshot.val().trainName);
-        $("#traktDestination").html(snapshot.val().destination);
-        $("#traktTrainTime").html(snapshot.val().trainTime);
-        $("#traktFrequency").html(snapshot.val().frequency);
-        //$("#nextArrival").html(snapshot.val().nextArrival);
-        /*
-              // Output all of the new information into the relevant sections
-              $("#traktTrainName").html(trainName);
-              $("#traktDestination").html(destination); 
-              $("#traktTrainTime").html(trainTime);
-              $("#traktFrequency").html(frequency);
-             // $("#nextArrival").html(nextArrival);
-        */
-        $("#form").get(0).reset()
-    });
-    // Clear localStorage
-    localStorage.clear();
-    /*      // Store all content into localStorage
-          localStorage.setItem("trainName", trainName);
-          localStorage.setItem("destination", destination);
-          localStorage.setItem("frequency", frequency);
-          localStorage.setItem("minutesAway", minutesAway);
-          
-        });
+            frequency: frequency
 
-        // By default display the content from localStorage
-        $("#name-display").html(localStorage.getItem("trainName"));
-        $("#comment-display").html(localStorage.getItem("destination"));
-        $("#email-display").html(localStorage.getItem("frequency"));
-        $("#age-display").html(localStorage.getItem("minutesAway"));
-        
-    */
-    // Whenever a user clicks the restart button
-    $("#restart-button").on("click", function() {
-        // Set the clickCounter back to initialValue
-        clickCounter = initialValue;
-        // Save new value to Firebase
-        database.ref().set({
-            clickCount: clickCounter
+        };
+
+
+        database.ref().push(newTrain);
+           
+        console.log(newTrain.trainName);
+        console.log(newTrain.destination);
+        console.log(newTrain.trainTime);
+        console.log(newTrain.frequency);
+
+        //Alert
+        alert("Your Train is being TrakT");
+
+        //Clear form
+/*        $("#trainName").val("");
+        $("#destination").val("");
+        $("#trainTime").val("");
+        $("#frequency").val("");
         });
-        // Log the value of clickCounter
-        console.log(clickCounter);
-        // Change the HTML Values
-        $("#click-value").html(clickCounter);
+*/        
+    $("#form").get(0).reset()
+        
+    //firebase watcher
+    database.ref().on("child_added", function(childSnapshot, prevChildKey) {
+        // Console log each of the user inputs to confirm we are receiving them
+        console.log(childSnapshot.val());
+
+        //New Train Details
+        var trainName = childSnapshot.val().trainName;
+        var destination = childSnapshot.val().destination;
+        var trainTime = childSnapshot.val().trainTime;
+        var frequency = childSnapshot.val().frequency;
+        
+        //console.log(snapshot.val().nextArrival);
+        console.log(trainName);
+        console.log(destination);
+        console.log(trainTime);
+        console.log(frequency);
+
+       //sanitize train time
+        var cleanTrainTime = moment.unix(trainTime).format("HH:mm");
+
+        $('#traktTable > tbody').append("<tr><td>" + trainName + "</td><td>" + destination + "</td><td>" + trainTime + "</td><td>" + frequency + "</td></tr>");
+
+
+
+
+
+        
     });
+    
 });
