@@ -46,12 +46,12 @@ $(document).ready(function() {
         alert("Your Train is being TrakT");
 
         //Clear form  
-   $("#form").get(0).reset()
+   $("#form").get(0).reset();
         
     //firebase watcher
     database.ref().on("child_added", function(childSnapshot, prevChildKey) {
         // Console log each of the user inputs to confirm we are receiving them
-        console.log(childSnapshot.val());
+//        console.log(childSnapshot.val());
 
         //New Train Details
         var trainName = childSnapshot.val().trainName;
@@ -60,11 +60,11 @@ $(document).ready(function() {
         var frequency = childSnapshot.val().frequency;
         
         //console.log(snapshot.val().nextArrival);
-        console.log(trainName);
+/*        console.log(trainName);
         console.log(destination);
         console.log(trainTime);
         console.log(frequency);
-
+*/
        //sanitize train time
         var cleanTrainTime = moment.unix(trainTime).format("HH:mm");
 
