@@ -16,13 +16,14 @@ $(document).ready(function() {
 
     // Capture Button Click
     $("#addTrain").on("click", function(event) {
+
         // prevent page from refreshing when form tries to submit itself
         event.preventDefault();
 
         // Put user inputs into variables
         var trainName = $("#trainName").val().trim();
         var destination = $("#destination").val().trim();
-        var trainTime = moment($("#trainTime").val().trim(), "HH:mm").format("X");
+        var trainTime = $("#trainTime").val().trim();
         var frequency = $("#frequency").val().trim();
         //var nextArrival = $("#nextArrival").val().trim();
         //initial data for firebase database
@@ -66,9 +67,9 @@ $(document).ready(function() {
         console.log(frequency);
 */
        //sanitize train time
-        var cleanTrainTime = moment.unix(trainTime).format("HH:mm");
+        //var cleanTrainTime = moment(trainTime).format("HH:mm");
 
-        $('#traktTable > tbody').append("<tr><td>" + trainName + "</td><td>" + destination + "</td><td>" + trainTime + "</td><td>" + frequency + "</td></tr>");
+        $('#traktTable > tbody').append("<tr><td>" + trainName + "</td><td>" + destination + "</td><td>" + frequency + "</td><td>" + trainTime + "</td></tr>");
 
 
 
