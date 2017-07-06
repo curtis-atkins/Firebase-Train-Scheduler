@@ -40,13 +40,28 @@ $(document).ready(function() {
             var destination = childSnapshot.val().destination;
             var trainTime = childSnapshot.val().trainTime;
             var frequency = childSnapshot.val().frequency;
+            
             //convert train time
-            var momentMath = (moment(trainTime, "HH:mm").diff(moment(), "minutes"));
-            console.log(momentMath);
-            nextArrival = (momentMath / frequency);
-            console.log(nextArrival);
-            var minutesAway = "";
-            $('#traktTable > tbody').append("<tr><td>" + trainName + "</td><td>" + destination + "</td><td>" + frequency + "</td><td>" + trainTime + "</td><td>" + nextArrival + "</td><td>" + minutesAway + "</td></tr>");
+            var trainTimeConverted = moment(trainTime, "HH:mm").subtract(1, "years");
+            console.log(trainTimeConverted);
+
+            //time at the current moment
+            var timeNow = moment();
+            console.log("The Time Now Is: " + moment(timeNow).format("hh:mm"));
+
+            //Difference in first train time and current time
+            var timeDif = moment().diff(moment(trainTimeConverted), "minutes");
+            console.log("Time Difference is: " + ((timeDif/8760)-frequency));
+
+            var trainModulo = timeDif % frequency;
+            console.log(trainModulo);
+
+            trainMinutesLeft =  frequency - trainModulo;
+            console.log("Train will arrive in: " + trainMinutesLeft);
+
+            var minutesAway = moment().subtract(trainMinutesLeft, "minutes");
+            console.log("Train will arrive at " + moment(minutesAway).format("HH:mm"));
+            $('#traktTable > tbody').append("<tr><td>" + trainName + "</td><td>" + destination + "</td><td>" + frequency + "</td><td>" + trainTime + "</td><td>" + minutesAway + "</td><td>" + trainMinutesLeft + "</td></tr>");
         });
     });
 });
